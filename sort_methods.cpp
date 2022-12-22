@@ -1,5 +1,6 @@
 #include "sort_methods.h"
 #include <iostream>
+#include <queue>
 #include <algorithm>
 
 using namespace std;
@@ -89,15 +90,23 @@ void merge_sort(int *v, int size) {
     merge_sorted(v, size / 2, size);
 } 
 
-// сортировка быстрая с выбором последнего элемента
-int quick_sorted(int *v, int l, int r) {
+// сортировка быстрая с выбором среднего элемента
+int partion(int *v, int l, int r, bool use_median_of_fml_instead_of_middle = false) {
+    if (l >= r) {
+        return r;
+    }
     int q = v[(l + r) / 2];
+    if (use_median_of_fml_instead_of_middle) {
+        int a[] = {v[l], v[(l + r) / 2], v[r]};
+        sort(a, a + 3);
+        q = a[1];
+    }
     int i = l;
     int j = r;
-    while (i <= j) {
-        while (v[i] < q)
+    while (i < j) {
+        while (v[i] <= q)
             i++;
-        while (v[j] > q)
+        while (v[j] >= q)
             j--;
         if (i >= j)
             break;
@@ -108,7 +117,7 @@ int quick_sorted(int *v, int l, int r) {
 void quick_sort(int *v, int n) {
     if (n <= 1)
         return;
-    int q = quick_sorted(v, 0, n);
+    int q = partion(v, 0, n - 1);
     quick_sort(v, q);
     quick_sort(v + q + 1, n - q - 1);
 } 
@@ -117,12 +126,14 @@ void quick_sort(int *v, int n) {
 void selection_sort(int *v, int n) {
     for (int i = 0; i < n; i++) {
         int min = v[i];
+        int min_idx = i;
         for (int j = i + 1; j < n; j++) {
             if (min > v[j]) {
                 min = v[j];
+                min_idx = j;
             }
         }
-        swap(v[i], min);
+        swap(v[i], v[min_idx]);
     }
 }
 
@@ -133,4 +144,16 @@ void insertion_sort(int *v, int n) {
             swap(v[j - 1], v[j]); 
         }
     }  
+}
+
+// сортировка кучей
+void heap_sort(int *v, int n) {
+    priority_queue<int> pq;
+    for (int i = 0; i < n; i++) {
+        pq.push(v[i]);
+    }
+    for (int i = n - 1; i >= 0; i--) {
+        v[i] = pq.top();
+        pq.pop();
+    }
 }
