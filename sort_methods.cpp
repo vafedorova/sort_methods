@@ -105,12 +105,12 @@ int quick_sorted(int *v, int l, int r) {
     }
     return j;
 }
-void quick_sort(int *v, int l, int r) {
-    if (r <= l)
+void quick_sort(int *v, int n) {
+    if (n <= 1)
         return;
-    int q = quick_sorted(v, l, r);
-    quick_sort(v, l, q);
-    quick_sort(v, q + 1, r);
+    int q = quick_sorted(v, 0, n);
+    quick_sort(v, q);
+    quick_sort(v + q + 1, n - q - 1);
 } 
 
 // сортировка выбором

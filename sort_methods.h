@@ -7,6 +7,6 @@ void bubble_sort(int *v, int n);
 void bubble_sort_opt(int *v, int n);
 void selection_sort(int *v, int n);
 void insertion_sort(int *v, int n);
-void merge_sort(int *v, int size);
-void quick_sort(int *v, int l, int r);
+void merge_sort(int *v, int n);
+void quick_sort(int *v, int n);
 #endif
