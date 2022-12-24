@@ -9,5 +9,6 @@ void selection_sort(int *v, int n);
 void insertion_sort(int *v, int n);
 void merge_sort(int *v, int n);
 void quick_sort(int *v, int n);
+void quick_sort_fml(int *v, int n);
 void heap_sort(int *v, int n);
 #endif

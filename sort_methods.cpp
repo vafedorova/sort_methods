@@ -106,7 +106,7 @@ int partion(int *v, int l, int r, bool use_median_of_fml_instead_of_middle = fal
     while (i < j) {
         while (v[i] <= q)
             i++;
-        while (v[j] >= q)
+        while (v[j] > q)
             j--;
         if (i >= j)
             break;
@@ -114,10 +114,18 @@ int partion(int *v, int l, int r, bool use_median_of_fml_instead_of_middle = fal
     }
     return j;
 }
+
 void quick_sort(int *v, int n) {
     if (n <= 1)
         return;
     int q = partion(v, 0, n - 1);
+    quick_sort(v, q);
+    quick_sort(v + q + 1, n - q - 1);
+} 
+void quick_sort_fml(int *v, int n) {
+    if (n <= 1)
+        return;
+    int q = partion(v, 0, n - 1, true);
     quick_sort(v, q);
     quick_sort(v + q + 1, n - q - 1);
 } 
