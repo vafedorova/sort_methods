@@ -2,6 +2,7 @@
 #include <iostream>
 #include <queue>
 #include <algorithm>
+#include <cassert>
 
 using namespace std;
 
@@ -92,27 +93,32 @@ void merge_sort(int *v, int size) {
 
 // сортировка быстрая с выбором среднего элемента
 int partion(int *v, int l, int r, bool use_median_of_fml_instead_of_middle = false) {
-    if (l >= r) {
+    if (l >= r || l < 0) {
         return r;
     }
-    int q = v[(l + r) / 2];
+    int pivot_ind = (l + r) / 2;
     if (use_median_of_fml_instead_of_middle) {
         int a[] = {v[l], v[(l + r) / 2], v[r]};
         sort(a, a + 3);
-        q = a[1];
+        int median = a[1];
+        if (median == v[l])
+            pivot_ind = l;
+        else if (median == v[r])
+            pivot_ind = r;
     }
-    int i = l;
-    int j = r;
-    while (i < j) {
-        while (v[i] <= q)
+    int pivot = v[pivot_ind];
+    swap(v[r], v[pivot_ind]);
+
+    int i = l - 1;
+    for (int j = l; j < r; j++) { 
+        if (v[j] <= pivot) {
             i++;
-        while (v[j] > q)
-            j--;
-        if (i >= j)
-            break;
-        swap(v[i++], v[j--]);
+            swap(v[i], v[j]);
+        }
     }
-    return j;
+    i++;
+    swap(v[i], v[r]);
+    return i;
 }
 
 void quick_sort(int *v, int n) {
@@ -122,6 +128,7 @@ void quick_sort(int *v, int n) {
     quick_sort(v, q);
     quick_sort(v + q + 1, n - q - 1);
 } 
+
 void quick_sort_fml(int *v, int n) {
     if (n <= 1)
         return;
